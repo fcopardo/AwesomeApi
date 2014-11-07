@@ -2,7 +2,7 @@ name := "spray-api"
 
 version := "1.0"
 
-organization := "com.bbr"
+organization := "com.awesomeapi"
 
 scalaVersion  := "2.10.4"
 
