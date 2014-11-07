@@ -1,0 +1,133 @@
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(255) DEFAULT NULL,
+  `gender` INT(1) UNSIGNED NOT NULL DEFAULT 0,
+  `birth_date` DATE DEFAULT NULL,
+  `encrypted_password` VARCHAR(255) DEFAULT NULL,
+  `created_at` DATETIME NOT NULL,
+  `updated_at` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `oauth_access_tokens`;
+CREATE TABLE `oauth_access_tokens` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `resource_owner_id` INT(11) DEFAULT NULL,
+  `application_id` INT(11) DEFAULT NULL,
+  `token` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `refresh_token` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `expires_in` INT(11) DEFAULT NULL,
+  `revoked_at` DATETIME DEFAULT NULL,
+  `created_at` DATETIME NOT NULL,
+  `scopes` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_oauth_access_tokens_on_token` (`token`),
+  UNIQUE KEY `index_oauth_access_tokens_on_refresh_token` (`refresh_token`),
+  KEY `index_oauth_access_tokens_on_resource_owner_id` (`resource_owner_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `oauth_applications`;
+CREATE TABLE `oauth_applications` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `uid` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `secret` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `redirect_uri` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'http://www.example.com/callback',
+  `created_at` DATETIME DEFAULT NULL,
+  `updated_at` DATETIME DEFAULT NULL,
+  `owner_id` int(11) DEFAULT NULL,
+  `owner_type` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_oauth_applications_on_uid` (`uid`),
+  KEY `index_oauth_applications_on_owner_id_and_owner_type` (`owner_id`,`owner_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `consumer_application_data`;
+CREATE TABLE `consumer_application_data` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `needs_email_validation` TINYINT(1) NOT NULL DEFAULT '0',
+  `oauth_application_id` int(11) NOT NULL,
+  `created_at` DATETIME DEFAULT NULL,
+  `updated_at` DATETIME DEFAULT NULL,
+  `minimal_version` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT '0.0.0',
+  `actual_version` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT '0.0.0',
+  `cache_time` INT(11) NOT NULL DEFAULT '0',
+  `grant_expires_in` INT(11) NOT NULL DEFAULT '6570000',
+  `scopes` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `is_preauthorized` TINYINT(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_consumer_application_data_on_oauth_application_id` (`oauth_application_id`),
+  CONSTRAINT `consumer_application_data_oauth_application_id_fk` FOREIGN KEY (`oauth_application_id`) REFERENCES `oauth_applications` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE `roles` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` DATETIME DEFAULT NULL,
+  `updated_at` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`)
+VALUES
+	(1,'super_admin',NULL,NULL),
+	(2,'admin',NULL,NULL),
+	(3,'user',NULL,NULL);
+
+DROP TABLE IF EXISTS `permissions`;
+CREATE TABLE `permissions` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `action` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `path` VARCHAR(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` DATETIME DEFAULT NULL,
+  `updated_at` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `user_roles`;
+CREATE TABLE `user_roles` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) DEFAULT NULL,
+  `role_id` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_user_roles_on_user_id` (`user_id`),
+  KEY `index_user_roles_on_role_id` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `permission_roles`;
+CREATE TABLE `permission_roles` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `permission_id` INT(11) DEFAULT NULL,
+  `role_id` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_permission_roles_on_role_id` (`role_id`),
+  KEY `index_permission_roles_on_permission_id` (`permission_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `permission_users`;
+CREATE TABLE `permission_users` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `permission_id` INT(11) DEFAULT NULL,
+  `user_id` INT(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_permission_users_on_user_id` (`user_id`),
+  KEY `index_permission_users_on_permission_id` (`permission_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+DROP TABLE IF EXISTS `identities`;
+CREATE TABLE `identities` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` INT(11) DEFAULT NULL,
+  `provider_type` INT(2) UNSIGNED NOT NULL DEFAULT 0,
+  `uid` VARCHAR(255) DEFAULT NULL,
+  `username` VARCHAR(255) DEFAULT NULL,
+  `token` VARCHAR(255) DEFAULT NULL,
+  `secret` VARCHAR(255) DEFAULT NULL,
+  `provider_updated_at` DATETIME DEFAULT NULL,
+  `created_at` DATETIME DEFAULT NULL,
+  `updated_at` DATETIME DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_identities_users_on_user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

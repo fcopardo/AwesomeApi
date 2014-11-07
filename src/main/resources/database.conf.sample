@@ -1,0 +1,38 @@
+development {
+  url = "jdbc:mysql://localhost"  
+  port = "3306"  
+  database = "api_dev"
+  driver = "com.mysql.jdbc.Driver"  
+  user = "root"  
+  password = ""  
+  encoding = "utf-8"
+  min_connections = 2
+  max_connections = 30
+  partition_count = 3
+}
+
+test {
+  url = "jdbc:mysql://localhost"  
+  port = "3306"  
+  database = "api_test"
+  driver = "com.mysql.jdbc.Driver"  
+  user = "root"  
+  password = ""  
+  encoding = "utf-8"
+  min_connections = 2
+  max_connections = 30
+  partition_count = 3
+}
+
+production {
+  url = "jdbc:mysql://localhost"  
+  port = "3306"  
+  database = "api_prod"
+  driver = "com.mysql.jdbc.Driver"  
+  user = "root"  
+  password = ""  
+  encoding = "utf-8"
+  min_connections = 2
+  max_connections = 30
+  partition_count = 3
+}

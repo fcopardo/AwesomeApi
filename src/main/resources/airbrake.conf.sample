@@ -1,0 +1,11 @@
+airbrake {
+  api_key = "0f8b82f92e7b410ada08bdd2b3cd26f7"
+  endpoint = "http://errbit.bbrmobile.me"
+  port = 80
+  notifier_name = "API (Akka/Spray)"
+  notifier_url = "http://api.bbrmobile.me"
+}
+
+development.enabled = false
+test.enabled = false
+production.enabled = true

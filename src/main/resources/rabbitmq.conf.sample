@@ -1,0 +1,9 @@
+rabbitMQ {
+  host = "10.200.206.18"
+  port = 5672
+  vhost = "/api-spray"
+  user = "bbr"
+  password = "bbr"
+  queue = "queue1"
+  exchange = "exchange1"
+}

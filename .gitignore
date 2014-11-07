@@ -1,0 +1,37 @@
+target/
+*.iml
+*.ipr
+*.iws
+.idea/
+.idea_modules/
+
+.project
+
+# OS X
+Icon
+Thumbs.db
+.DS_Store
+
+# SASS
+*.sass-cache
+
+# Gradle
+build/
+.gradle/
+out/
+
+.history
+
+project/project
+projectFilesBackup
+woas.spec
+
+# Config files
+src/main/resources/logs.conf
+src/main/resources/application.conf
+src/main/resources/database.conf
+src/main/resources/x_mac.conf
+src/main/resources/airbrake.conf
+src/main/resources/secrets.conf
+src/main/resources/rabbitmq.conf
+src/main/resources/templates.conf

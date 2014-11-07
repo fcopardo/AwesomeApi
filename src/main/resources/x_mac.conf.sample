@@ -1,0 +1,23 @@
+development {
+  enabled = true
+  time_limited = true
+  time_inf_limit = -20
+  time_sup_limit = 100
+  secret = "SAMPLE_SECRET_KEY"
+}
+
+test {
+  enabled = true
+  time_limited = true
+  time_inf_limit = -20
+  time_sup_limit = 100
+  secret = "SAMPLE_SECRET_KEY"
+}
+
+production {
+  enabled = true
+  time_limited = true
+  time_inf_limit = -20
+  time_sup_limit = 100
+  secret = "SAMPLE_SECRET_KEY"
+}

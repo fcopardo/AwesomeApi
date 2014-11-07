@@ -1,0 +1,46 @@
+development = [
+  {
+    strategy = api
+    enabled = true
+    params {}
+  },
+  {
+    strategy = google
+    enabled = true
+    params {
+      tracking_id = "UA-XXXXXXXX-X"
+    }
+  }
+]
+
+test = [
+  {
+    strategy = api
+    enabled = true
+    params {}
+  },
+  {
+    strategy = google
+    enabled = true
+    params {
+      tracking_id = "UA-XXXXXXXX-X"
+    }
+  }
+]
+
+production = [
+  {
+    strategy = api
+    enabled = true
+    params {}
+  },
+  {
+    strategy = google
+    enabled = true
+    params {
+      tracking_id = "UA-XXXXXXXX-X"
+    }
+  }
+]
+
+upgrade_url = "http://upgrade_url"

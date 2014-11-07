@@ -1,0 +1,4 @@
+mailer {
+  recovery = "http://localhost/recovery.html"
+  confirmation = "http://localhost/confirmation.html"
+}
